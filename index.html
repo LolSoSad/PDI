@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>ตารางจับคู่ รถยก ↔ กล่อง (ยืนยันงาน)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --blue:#1F6FB2;
+  --orange:#FF7A1A;
+  --green:#16a34a;
+  --line:#e6eef7;
+  --bg:#f7fbff;
+  --text:#0f172a;
+}
+body{
+  margin:0;
+  font-family:'Prompt',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+.container{
+  max-width:950px;
+  margin:40px auto;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 8px 20px rgba(0,0,0,.06);
+  overflow:hidden;
+}
+.header{
+  padding:16px 20px;
+  font-size:18px;
+  font-weight:800;
+  background:linear-gradient(90deg,#eaf4ff,#ffffff,#fff1e7);
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+th{
+  background:#eaf1fb;
+  padding:14px;
+  font-size:14px;
+  text-align:left;
+}
+td{
+  padding:14px;
+  border-bottom:1px solid var(--line);
+  font-size:15px;
+  vertical-align:middle;
+}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f9fcff}
+.center{text-align:center;font-weight:700;color:#64748b}
+
+.chip{
+  display:inline-block;
+  padding:8px 14px;
+  border-radius:12px;
+  font-weight:700;
+  font-size:14px;
+}
+.truck{background:#eaf4ff;color:var(--blue)}
+.box{background:#fff1e7;color:var(--orange)}
+
+.no{
+  font-weight:800;
+  color:#475569;
+}
+
+.btn-confirm{
+  background:var(--green);
+  color:#fff;
+  border:none;
+  padding:8px 14px;
+  border-radius:10px;
+  font-family:'Prompt',sans-serif;
+  font-weight:700;
+  cursor:pointer;
+}
+.btn-confirm:disabled{
+  background:#86efac;
+  cursor:default;
+}
+
+.status-done{
+  font-weight:800;
+  color:var(--green);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="header">
+    ตารางบอกคู่ รถยก ↔ กล่อง (กดยืนยันเมื่อประกอบเสร็จ)
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th width="8%" class="center">ลำดับ</th>
+        <th width="30%">เลขรถยก</th>
+        <th width="8%" class="center">คู่</th>
+        <th width="30%">เลขกล่อง</th>
+        <th width="24%" class="center">ยืนยันงาน</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="center no">1</td>
+        <td><span class="chip truck">TRK-2026-00021</span></td>
+        <td class="center">⟷</td>
+        <td><span class="chip box">BOX-88A-01992</span></td>
+        <td class="center">
+          <button class="btn-confirm" onclick="confirmRow(this)">Confirm</button>
+        </td>
+      </tr>
+      <tr>
+        <td class="center no">2</td>
+        <td><span class="chip truck">TRK-2026-00022</span></td>
+        <td class="center">⟷</td>
+        <td><span class="chip box">BOX-88A-01993</span></td>
+        <td class="center">
+          <button class="btn-confirm" onclick="confirmRow(this)">Confirm</button>
+        </td>
+      </tr>
+      <tr>
+        <td class="center no">3</td>
+        <td><span class="chip truck">TRK-2026-00023</span></td>
+        <td class="center">⟷</td>
+        <td><span class="chip box">BOX-88A-02010</span></td>
+        <td class="center">
+          <button class="btn-confirm" onclick="confirmRow(this)">Confirm</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+function confirmRow(btn){
+  if(!confirm('ยืนยันว่าประกอบเสร็จแล้วใช่หรือไม่?')) return;
+
+  btn.disabled = true;
+  btn.innerText = 'Confirmed';
+
+  const td = btn.parentElement;
+  td.innerHTML = '<span class="status-done">✔ ประกอบเสร็จแล้ว</span>';
+
+  const tr = td.parentElement;
+  tr.style.background = '#f0fdf4';
+}
+</script>
+
+</body>
+</html>
