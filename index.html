@@ -186,7 +186,7 @@
 
     .col-no{ width: 56px; color: var(--muted); text-align:center; }
     .col-action{ width: 230px; }
-    .col-confirm{ width: 120px; text-align:center; }
+    .col-ยืนยัน{ width: 120px; text-align:center; }
 
     .link-pill{
       display:inline-flex;
@@ -278,7 +278,7 @@
       transform: translateY(-1px);
     }
 
-    .btn-confirm{
+    .btn-ยืนยัน{
       background: rgba(16,185,129,.14);
       color: #047857;
       border: 1px solid rgba(16,185,129,.35);
@@ -286,7 +286,7 @@
       border-radius: 999px;
       font-weight: 900;
     }
-    .btn-confirm:hover{
+    .btn-ยืนยัน:hover{
       background: rgba(16,185,129,.18);
       transform: translateY(-1px);
     }
@@ -335,7 +335,7 @@
         font-size: 12px;
       }
 
-      .col-no, .col-confirm{ text-align:left; width:auto; }
+      .col-no, .col-ยืนยัน{ text-align:left; width:auto; }
       .btns{ justify-content:flex-start; }
     }
   </style>
@@ -370,9 +370,9 @@
               <th class="col-no">ลำดับ</th>
               <th>เลขรถยก</th>
               <th>⇄</th>
-              <th>serial กล่อง</th>
+              <th>ซีเรียลกล่อง</th>
               <th>ข้อมูลประกอบที่ถอดออก</th>
-              <th class="col-confirm">ยืนยัน</th>
+              <th class="col-ยืนยัน">ยืนยัน</th>
             </tr>
           </thead>
 
@@ -387,17 +387,17 @@
               <td data-label="เชื่อม">
                 <span class="status ok"><span class="dot"></span> จับคู่แล้ว</span>
               </td>
-              <td data-label="serial กล่อง">
+              <td data-label="ซีเรียลกล่อง">
                 <span class="sn"><i class="bi bi-cpu"></i> 2510032</span>
               </td>
               <td data-label="รายละเอียด">
                 <div class="btns">
-                  <a class="btn btn-primary" href="#"><i class="bi bi-wrench-adjustable"></i> Detail Assemble</a>
-                  <a class="btn btn-ghost" href="#"><i class="bi bi-clipboard-check"></i> Detail QC</a>
+                  <a class="btn btn-primary" href="#"><i class="bi bi-wrench-adjustable"></i> รายละเอียดการประกอบ</a>
+                  <a class="btn btn-ghost" href="#"><i class="bi bi-clipboard-check"></i> รายละเอียด QC</a>
                 </div>
               </td>
-              <td class="col-confirm" data-label="ยืนยัน">
-                <button class="btn btn-confirm"><i class="bi bi-check2-circle"></i> Confirm</button>
+              <td class="col-ยืนยัน" data-label="ยืนยัน">
+                <button class="btn btn-ยืนยัน"><i class="bi bi-check2-circle"></i> ยืนยัน</button>
               </td>
             </tr>
 
@@ -411,7 +411,7 @@
               <td data-label="เชื่อม">
                 <span class="status wait"><span class="dot"></span> รอยืนยัน</span>
               </td>
-              <td data-label="serial กล่อง">
+              <td data-label="ซีเรียลกล่อง">
                 <span class="sn"><i class="bi bi-cpu"></i> -</span>
               </td>
               <td data-label="รายละเอียด">
@@ -419,8 +419,8 @@
                   <span style="color:var(--muted);font-weight:700;">-</span>
                 </div>
               </td>
-              <td class="col-confirm" data-label="ยืนยัน">
-                <button class="btn btn-confirm"><i class="bi bi-check2-circle"></i> Confirm</button>
+              <td class="col-ยืนยัน" data-label="ยืนยัน">
+                <button class="btn btn-ยืนยัน"><i class="bi bi-check2-circle"></i> ยืนยัน</button>
               </td>
             </tr>
 
@@ -434,16 +434,16 @@
               <td data-label="เชื่อม">
                 <span class="status ok"><span class="dot"></span> จับคู่แล้ว</span>
               </td>
-              <td data-label="serial กล่อง">
+              <td data-label="ซีเรียลกล่อง">
                 <span class="sn"><i class="bi bi-cpu"></i> 222228</span>
               </td>
               <td data-label="รายละเอียด">
                 <div class="btns">
-                  <a class="btn btn-primary" href="#"><i class="bi bi-wrench-adjustable"></i> Detail Assemble</a>
+                  <a class="btn btn-primary" href="#"><i class="bi bi-wrench-adjustable"></i> รายละเอียดการประกอบ</a>
                 </div>
               </td>
-              <td class="col-confirm" data-label="ยืนยัน">
-                <button class="btn btn-confirm"><i class="bi bi-check2-circle"></i> Confirm</button>
+              <td class="col-ยืนยัน" data-label="ยืนยัน">
+                <button class="btn btn-ยืนยัน"><i class="bi bi-check2-circle"></i> ยืนยัน</button>
               </td>
             </tr>
 
