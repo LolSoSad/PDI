@@ -8,7 +8,7 @@
 
   
   <style>
-    :root{
+:root{
       --primary:#1f6fb2;       /* ฟ้า */
       --accent:#ff7a1a;        /* ส้ม */
       --bg:#f5f7fb;
@@ -338,6 +338,110 @@
       .col-no, .col-ยืนยัน{ text-align:left; width:auto; }
       .btns{ justify-content:flex-start; }
     }
+
+    /* Modal: กรอกชื่อช่างผู้ประกอบ */
+    .modal-backdrop{
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 9999;
+    }
+    .modal-backdrop.show{ display:flex; }
+
+    .modal-card{
+      width: min(520px, 100%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 20px 45px rgba(15,23,42,.18);
+      overflow: hidden;
+    }
+    .modal-head{
+      padding: 14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border-bottom: 1px solid var(--border);
+      background: #fff;
+    }
+    .modal-title{
+      display:flex; align-items:center; gap:10px;
+      font-weight: 900;
+    }
+    .modal-title .ic{
+      width: 36px; height: 36px;
+      display:grid; place-items:center;
+      border-radius: 12px;
+      background: var(--blue-soft);
+      border: 1px solid rgba(31,111,178,.22);
+      color: var(--primary);
+    }
+    .modal-close{
+      border:none;
+      background: rgba(15,23,42,.06);
+      border: 1px solid rgba(15,23,42,.10);
+      border-radius: 10px;
+      padding: 8px 10px;
+      cursor:pointer;
+      font-weight: 900;
+    }
+    .modal-body{ padding: 14px 16px 6px; }
+    .form-label{
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 800;
+      margin-bottom: 6px;
+      display:block;
+    }
+    .form-input{
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      outline: none;
+      font-size: 13px;
+    }
+    .form-input:focus{
+      border-color: rgba(31,111,178,.55);
+      box-shadow: 0 0 0 4px rgba(31,111,178,.12);
+    }
+    .help{
+      margin: 8px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .error{
+      display:none;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(255,122,26,.12);
+      border: 1px solid rgba(255,122,26,.35);
+      color: #b84a00;
+      font-weight: 800;
+      font-size: 12px;
+    }
+    .error.show{ display:block; }
+
+    .modal-foot{
+      padding: 12px 16px 16px;
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+    }
+
+    /* pill for assembler */
+    .assembler-pill{
+      background: rgba(31,111,178,.10);
+      border-color: rgba(31,111,178,.25);
+      color: #0e4f86;
+    }
+
   </style>
 
 </head>
@@ -350,7 +454,6 @@
           <div class="badge-dot"><i class="bi bi-link-45deg"></i></div>
           <div>
             <h1>ข้อมูลรายการแมชชิ่งกล่องและรถยก</h1>
-            <p>ธีมสีฟ้า-ส้ม • อ่านง่าย • มือถือเป็นการ์ดอัตโนมัติ</p>
           </div>
         </div>
 
@@ -371,6 +474,7 @@
               <th>เลขรถยก</th>
               <th>⇄</th>
               <th>ซีเรียลกล่อง</th>
+              <th>ช่างผู้ประกอบ</th>
               <th>ข้อมูลประกอบที่ถอดออก</th>
               <th class="col-ยืนยัน">ยืนยัน</th>
             </tr>
@@ -389,6 +493,9 @@
               </td>
               <td data-label="ซีเรียลกล่อง">
                 <span class="sn"><i class="bi bi-cpu"></i> 2510032</span>
+              </td>
+              <td data-label="ช่างผู้ประกอบ">
+                <span class="sn assembler-pill"><i class="bi bi-person-check"></i> -</span>
               </td>
               <td data-label="รายละเอียด">
                 <div class="btns">
@@ -414,6 +521,9 @@
               <td data-label="ซีเรียลกล่อง">
                 <span class="sn"><i class="bi bi-cpu"></i> -</span>
               </td>
+              <td data-label="ช่างผู้ประกอบ">
+                <span class="sn assembler-pill"><i class="bi bi-person-check"></i> -</span>
+              </td>
               <td data-label="รายละเอียด">
                 <div class="btns">
                   <span style="color:var(--muted);font-weight:700;">-</span>
@@ -437,6 +547,9 @@
               <td data-label="ซีเรียลกล่อง">
                 <span class="sn"><i class="bi bi-cpu"></i> 222228</span>
               </td>
+              <td data-label="ช่างผู้ประกอบ">
+                <span class="sn assembler-pill"><i class="bi bi-person-check"></i> -</span>
+              </td>
               <td data-label="รายละเอียด">
                 <div class="btns">
                   <a class="btn btn-primary" href="#"><i class="bi bi-wrench-adjustable"></i> รายละเอียดการประกอบ</a>
@@ -452,5 +565,120 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal: กรอกชื่อช่างผู้ประกอบ -->
+  <div class="modal-backdrop" id="assemblerModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="assemblerTitle">
+      <div class="modal-head">
+        <div class="modal-title" id="assemblerTitle">
+          <span class="ic"><i class="bi bi-person-check"></i></span>
+          <span>ยืนยันงานประกอบ</span>
+        </div>
+        <button class="modal-close" type="button" id="assemblerClose"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <label class="form-label">ชื่อช่างผู้ประกอบ</label>
+        <input class="form-input" id="assemblerName" type="text" placeholder="เช่น สมชาย ใจดี" />
+        <p class="help">เมื่อกด “บันทึกและยืนยัน” ระบบจะแสดงชื่อช่างผู้ประกอบในตาราง</p>
+        <div class="error" id="assemblerError">กรุณากรอกชื่อช่างผู้ประกอบ</div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-ghost" type="button" id="assemblerCancel"><i class="bi bi-x-circle"></i> ยกเลิก</button>
+        <button class="btn btn-primary" type="button" id="assemblerSave"><i class="bi bi-check2-circle"></i> บันทึกและยืนยัน</button>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    (function(){
+      const modal = document.getElementById('assemblerModal');
+      const input = document.getElementById('assemblerName');
+      const err = document.getElementById('assemblerError');
+      const btnClose = document.getElementById('assemblerClose');
+      const btnCancel = document.getElementById('assemblerCancel');
+      const btnSave = document.getElementById('assemblerSave');
+
+      let activeRow = null; // <tr>
+
+      function openModal(row){
+        activeRow = row;
+        err.classList.remove('show');
+        input.value = '';
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+        setTimeout(()=>input.focus(), 50);
+      }
+
+      function closeModal(){
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+        activeRow = null;
+      }
+
+      function setAssemblerName(name){
+        if(!activeRow) return;
+
+        const cell = activeRow.querySelector('td[data-label="ช่างผู้ประกอบ"]');
+        if(cell){
+          cell.innerHTML = '<span class="sn assembler-pill"><i class="bi bi-person-check"></i> ' + escapeHtml(name) + '</span>';
+        }
+      }
+
+      function escapeHtml(str){
+        return String(str)
+          .replaceAll('&','&amp;')
+          .replaceAll('<','&lt;')
+          .replaceAll('>','&gt;')
+          .replaceAll('"','&quot;')
+          .replaceAll("'","&#039;");
+      }
+
+      // bind confirm buttons
+      document.querySelectorAll('.btn-ยืนยัน').forEach(btn=>{
+        btn.addEventListener('click', function(e){
+          e.preventDefault();
+          const row = this.closest('tr');
+          openModal(row);
+        });
+      });
+
+      // close actions
+      btnClose.addEventListener('click', closeModal);
+      btnCancel.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
+
+      // save
+      btnSave.addEventListener('click', ()=>{
+        const name = (input.value || '').trim();
+        if(!name){
+          err.classList.add('show');
+          input.focus();
+          return;
+        }
+        setAssemblerName(name);
+        closeModal();
+      });
+
+      // enter key
+      input.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter'){
+          e.preventDefault();
+          btnSave.click();
+        }
+        if(e.key === 'Escape'){
+          e.preventDefault();
+          closeModal();
+        }
+      });
+
+      document.addEventListener('keydown', (e)=>{
+        if(e.key === 'Escape' && modal.classList.contains('show')){
+          closeModal();
+        }
+      });
+    })();
+  </script>
+
 </body>
 </html>
