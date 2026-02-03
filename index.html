@@ -1,160 +1,456 @@
 <!doctype html>
 <html lang="th">
 <head>
-<meta charset="utf-8">
-<title>ตารางจับคู่ รถยก ↔ กล่อง (ยืนยันงาน)</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ข้อมูลรายการแมชชิ่งกล่องและรถยก</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
-<style>
-:root{
-  --blue:#1F6FB2;
-  --orange:#FF7A1A;
-  --green:#16a34a;
-  --line:#e6eef7;
-  --bg:#f7fbff;
-  --text:#0f172a;
-}
-body{
-  margin:0;
-  font-family:'Prompt',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
-.container{
-  max-width:950px;
-  margin:40px auto;
-  background:#fff;
-  border-radius:12px;
-  box-shadow:0 8px 20px rgba(0,0,0,.06);
-  overflow:hidden;
-}
-.header{
-  padding:16px 20px;
-  font-size:18px;
-  font-weight:800;
-  background:linear-gradient(90deg,#eaf4ff,#ffffff,#fff1e7);
-}
-table{
-  width:100%;
-  border-collapse:collapse;
-}
-th{
-  background:#eaf1fb;
-  padding:14px;
-  font-size:14px;
-  text-align:left;
-}
-td{
-  padding:14px;
-  border-bottom:1px solid var(--line);
-  font-size:15px;
-  vertical-align:middle;
-}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:#f9fcff}
-.center{text-align:center;font-weight:700;color:#64748b}
+  
+  <style>
+    :root{
+      --primary:#1f6fb2;       /* ฟ้า */
+      --accent:#ff7a1a;        /* ส้ม */
+      --bg:#f5f7fb;
+      --card:#ffffff;
+      --border:#e6edf7;
+      --text:#0f172a;
+      --muted:#64748b;
 
-.chip{
-  display:inline-block;
-  padding:8px 14px;
-  border-radius:12px;
-  font-weight:700;
-  font-size:14px;
-}
-.truck{background:#eaf4ff;color:var(--blue)}
-.box{background:#fff1e7;color:var(--orange)}
+      --radius:18px;
+      --shadow:0 14px 30px rgba(15,23,42,.08);
 
-.no{
-  font-weight:800;
-  color:#475569;
-}
+      /* soft surfaces */
+      --blue-soft:#eaf2fb;
+      --orange-soft:#fff1e6;
 
-.btn-confirm{
-  background:var(--green);
-  color:#fff;
-  border:none;
-  padding:8px 14px;
-  border-radius:10px;
-  font-family:'Prompt',sans-serif;
-  font-weight:700;
-  cursor:pointer;
-}
-.btn-confirm:disabled{
-  background:#86efac;
-  cursor:default;
-}
+      /* status */
+      --ok-bg:rgba(31,111,178,.14);
+      --ok-bd:rgba(31,111,178,.35);
+      --ok-tx:#155b96;
 
-.status-done{
-  font-weight:800;
-  color:var(--green);
-}
-</style>
+      --wait-bg:rgba(255,122,26,.14);
+      --wait-bd:rgba(255,122,26,.40);
+      --wait-tx:#b84a00;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Thai", Arial;
+      background: var(--bg);   /* ✅ no gradient */
+      color:var(--text);
+    }
+
+    .page{
+      max-width: 1200px;
+      margin: 22px auto;
+      padding: 0 14px;
+    }
+
+    .panel{
+      background: var(--card); /* ✅ no gradient */
+      border: 1px solid rgba(230,237,247,.95);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;      /* ✅ no gradient */
+    }
+
+    .title{
+      display:flex; gap:10px; align-items:center;
+    }
+    .title .badge-dot{
+      width: 40px; height: 40px;
+      border-radius: 14px;
+      display:grid; place-items:center;
+      background: var(--blue-soft); /* ✅ no gradient */
+      border: 1px solid rgba(31,111,178,.22);
+      color: var(--primary);
+    }
+    .title h1{
+      margin:0;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+    .title p{
+      margin:3px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .tools{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+
+    .search{
+      position:relative;
+      min-width: 260px;
+      max-width: 360px;
+      flex:1;
+    }
+    .search input{
+      width:100%;
+      padding: 10px 12px 10px 36px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #fff;         /* ✅ flat */
+      outline:none;
+      transition:.15s;
+      font-size: 13px;
+    }
+    .search input:focus{
+      border-color: rgba(31,111,178,.55);
+      box-shadow: 0 0 0 4px rgba(31,111,178,.12);
+    }
+    .search i{
+      position:absolute;
+      left: 12px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #fff;         /* ✅ flat */
+      font-size: 12px;
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .chip b{color:var(--text)}
+    .chip .dot{
+      width:10px; height:10px; border-radius:999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(255,122,26,.18);
+    }
+
+    /* table */
+    .table-wrap{ padding: 12px 12px 16px; }
+
+    table{
+      width:100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow:hidden;
+    }
+
+    thead th{
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: var(--blue-soft); /* ✅ no gradient */
+      color: #0b1b2f;
+      font-size: 12px;
+      text-align:left;
+      padding: 12px 12px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 800;
+    }
+
+    tbody td{
+      padding: 12px 12px;
+      border-bottom: 1px solid rgba(230,237,247,.8);
+      vertical-align: middle;
+      font-size: 13px;
+    }
+
+    tbody tr{
+      transition: .15s;
+    }
+    tbody tr:hover{
+      background: rgba(31,111,178,.05); /* ✅ no gradient */
+    }
+
+    .col-no{ width: 56px; color: var(--muted); text-align:center; }
+    .col-action{ width: 230px; }
+    .col-confirm{ width: 120px; text-align:center; }
+
+    .link-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(31,111,178,.28);
+      background: var(--blue-soft);
+      color: #0e4f86;
+      font-weight: 800;
+      text-decoration:none;
+    }
+    .link-pill i{ font-size: 14px; }
+
+    .sn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,122,26,.32);
+      background: var(--orange-soft);
+      color: #a54300;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 12px;
+      border: 1px solid transparent;
+      white-space:nowrap;
+    }
+    .status.ok{ background: var(--ok-bg); border-color: var(--ok-bd); color: var(--ok-tx); }
+    .status.wait{ background: var(--wait-bg); border-color: var(--wait-bd); color: var(--wait-tx); }
+    .status .dot{
+      width:8px; height:8px; border-radius:999px;
+      background: currentColor;
+      opacity:.9;
+    }
+
+    .btns{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-start;
+    }
+    .btn{
+      border:none;
+      border-radius: 12px;
+      padding: 9px 10px;
+      font-weight: 800;
+      font-size: 12px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      transition:.15s;
+      text-decoration:none;
+      user-select:none;
+    }
+    .btn-primary{
+      background: var(--primary); /* ✅ no gradient */
+      color:#fff;
+      box-shadow: none;
+    }
+    .btn-primary:hover{ filter: brightness(1.03); transform: translateY(-1px); }
+
+    .btn-accent{
+      background: var(--accent);  /* ✅ no gradient */
+      color:#fff;
+      box-shadow: none;
+    }
+    .btn-accent:hover{ filter: brightness(1.03); transform: translateY(-1px); }
+
+    .btn-ghost{
+      background: rgba(15,23,42,.04);
+      border: 1px solid rgba(15,23,42,.10);
+      color: #0f172a;
+    }
+    .btn-ghost:hover{
+      background: rgba(15,23,42,.06);
+      transform: translateY(-1px);
+    }
+
+    .btn-confirm{
+      background: rgba(16,185,129,.14);
+      color: #047857;
+      border: 1px solid rgba(16,185,129,.35);
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-weight: 900;
+    }
+    .btn-confirm:hover{
+      background: rgba(16,185,129,.18);
+      transform: translateY(-1px);
+    }
+
+    /* Mobile: table -> card list */
+    @media (max-width: 860px){
+      .panel-head{
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .tools{ justify-content:flex-start; }
+      .search{ min-width: 100%; max-width: 100%; }
+
+      table, thead, tbody, th, td, tr{ display:block; }
+      thead{ display:none; }
+
+      table{
+        border-radius: 16px;
+        border: none;
+        background: transparent;
+      }
+      tbody tr{
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: 0 10px 18px rgba(15,23,42,.06);
+        margin-bottom: 12px;
+        overflow:hidden;
+      }
+      tbody td{
+        border-bottom: 1px dashed rgba(230,237,247,.9);
+        padding: 10px 12px;
+      }
+      tbody td:last-child{ border-bottom:none; }
+
+      td[data-label]{
+        display:flex;
+        gap:10px;
+        align-items:flex-start;
+      }
+      td[data-label]::before{
+        content: attr(data-label);
+        min-width: 120px;
+        color: var(--muted);
+        font-weight: 800;
+        font-size: 12px;
+      }
+
+      .col-no, .col-confirm{ text-align:left; width:auto; }
+      .btns{ justify-content:flex-start; }
+    }
+  </style>
+
 </head>
 
 <body>
+  <div class="page">
+    <div class="panel">
+      <div class="panel-head">
+        <div class="title">
+          <div class="badge-dot"><i class="bi bi-link-45deg"></i></div>
+          <div>
+            <h1>ข้อมูลรายการแมชชิ่งกล่องและรถยก</h1>
+            <p>ธีมสีฟ้า-ส้ม • อ่านง่าย • มือถือเป็นการ์ดอัตโนมัติ</p>
+          </div>
+        </div>
 
-<div class="container">
-  <div class="header">
-    ตารางบอกคู่ รถยก ↔ กล่อง (กดยืนยันเมื่อประกอบเสร็จ)
+        <div class="tools">
+          <div class="search">
+            <i class="bi bi-search"></i>
+            <input type="text" placeholder="ค้นหา: เลขรถยก / serial / รหัส..." />
+          </div>
+          <div class="chip"><span class="dot"></span> <b>รวม</b> 17 รายการ</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="col-no">ลำดับ</th>
+              <th>เลขรถยก</th>
+              <th>⇄</th>
+              <th>serial กล่อง</th>
+              <th>ข้อมูลประกอบที่ถอดออก</th>
+              <th class="col-confirm">ยืนยัน</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td class="col-no" data-label="ลำดับ">1</td>
+              <td data-label="เลขรถยก">
+                <a class="link-pill" href="#">
+                  <i class="bi bi-truck"></i> LPE (LPE200) - 0007
+                </a>
+              </td>
+              <td data-label="เชื่อม">
+                <span class="status ok"><span class="dot"></span> จับคู่แล้ว</span>
+              </td>
+              <td data-label="serial กล่อง">
+                <span class="sn"><i class="bi bi-cpu"></i> 2510032</span>
+              </td>
+              <td data-label="รายละเอียด">
+                <div class="btns">
+                  <a class="btn btn-primary" href="#"><i class="bi bi-wrench-adjustable"></i> Detail Assemble</a>
+                  <a class="btn btn-ghost" href="#"><i class="bi bi-clipboard-check"></i> Detail QC</a>
+                </div>
+              </td>
+              <td class="col-confirm" data-label="ยืนยัน">
+                <button class="btn btn-confirm"><i class="bi bi-check2-circle"></i> Confirm</button>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="col-no" data-label="ลำดับ">2</td>
+              <td data-label="เลขรถยก">
+                <a class="link-pill" href="#">
+                  <i class="bi bi-truck"></i> LPE (test0005) - 0003
+                </a>
+              </td>
+              <td data-label="เชื่อม">
+                <span class="status wait"><span class="dot"></span> รอยืนยัน</span>
+              </td>
+              <td data-label="serial กล่อง">
+                <span class="sn"><i class="bi bi-cpu"></i> -</span>
+              </td>
+              <td data-label="รายละเอียด">
+                <div class="btns">
+                  <span style="color:var(--muted);font-weight:700;">-</span>
+                </div>
+              </td>
+              <td class="col-confirm" data-label="ยืนยัน">
+                <button class="btn btn-confirm"><i class="bi bi-check2-circle"></i> Confirm</button>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="col-no" data-label="ลำดับ">3</td>
+              <td data-label="เลขรถยก">
+                <a class="link-pill" href="#">
+                  <i class="bi bi-truck"></i> LHE (LHE150) - 2010018299
+                </a>
+              </td>
+              <td data-label="เชื่อม">
+                <span class="status ok"><span class="dot"></span> จับคู่แล้ว</span>
+              </td>
+              <td data-label="serial กล่อง">
+                <span class="sn"><i class="bi bi-cpu"></i> 222228</span>
+              </td>
+              <td data-label="รายละเอียด">
+                <div class="btns">
+                  <a class="btn btn-primary" href="#"><i class="bi bi-wrench-adjustable"></i> Detail Assemble</a>
+                </div>
+              </td>
+              <td class="col-confirm" data-label="ยืนยัน">
+                <button class="btn btn-confirm"><i class="bi bi-check2-circle"></i> Confirm</button>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
-
-  <table>
-    <thead>
-      <tr>
-        <th width="8%" class="center">ลำดับ</th>
-        <th width="30%">เลขรถยก</th>
-        <th width="8%" class="center">คู่</th>
-        <th width="30%">เลขกล่อง</th>
-        <th width="24%" class="center">ยืนยันงาน</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="center no">1</td>
-        <td><span class="chip truck">TRK-2026-00021</span></td>
-        <td class="center">⟷</td>
-        <td><span class="chip box">BOX-88A-01992</span></td>
-        <td class="center">
-          <button class="btn-confirm" onclick="confirmRow(this)">Confirm</button>
-        </td>
-      </tr>
-      <tr>
-        <td class="center no">2</td>
-        <td><span class="chip truck">TRK-2026-00022</span></td>
-        <td class="center">⟷</td>
-        <td><span class="chip box">BOX-88A-01993</span></td>
-        <td class="center">
-          <button class="btn-confirm" onclick="confirmRow(this)">Confirm</button>
-        </td>
-      </tr>
-      <tr>
-        <td class="center no">3</td>
-        <td><span class="chip truck">TRK-2026-00023</span></td>
-        <td class="center">⟷</td>
-        <td><span class="chip box">BOX-88A-02010</span></td>
-        <td class="center">
-          <button class="btn-confirm" onclick="confirmRow(this)">Confirm</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<script>
-function confirmRow(btn){
-  if(!confirm('ยืนยันว่าประกอบเสร็จแล้วใช่หรือไม่?')) return;
-
-  btn.disabled = true;
-  btn.innerText = 'Confirmed';
-
-  const td = btn.parentElement;
-  td.innerHTML = '<span class="status-done">✔ ประกอบเสร็จแล้ว</span>';
-
-  const tr = td.parentElement;
-  tr.style.background = '#f0fdf4';
-}
-</script>
-
 </body>
 </html>
